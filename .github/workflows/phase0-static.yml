@@ -1,0 +1,27 @@
+name: Phase 0 Static CI
+
+on:
+  push:
+    paths:
+      - "modules/phase-0-foundation/**"
+      - ".github/workflows/phase0-static.yml"
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: modules/phase-0-foundation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check shell syntax
+        run: |
+          find scripts -name "*.sh" -print0 | xargs -0 -n1 bash -n
+
+      - name: Check required env values
+        run: |
+          grep -q '^VECTOR_STORE=qdrant' .env.example
+          grep -q '^QDRANT_URL=http://qdrant:6333' .env.example

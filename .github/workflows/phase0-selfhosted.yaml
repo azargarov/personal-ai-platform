@@ -1,0 +1,27 @@
+name: Phase 0 Local Acceptance
+
+on:
+  workflow_dispatch:
+
+jobs:
+  local-rag-test:
+    runs-on: [self-hosted, linux, ai-server]
+
+    defaults:
+      run:
+        working-directory: modules/phase-0-foundation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Ollama
+        run: ./scripts/verify-ollama.sh
+
+      - name: Verify Dify to Ollama
+        run: ./scripts/verify-dify-ollama.sh
+
+      - name: Verify Dify worker to Ollama
+        run: ./scripts/verify-worker-ollama.sh
+
+      - name: Verify Dify to Qdrant
+        run: ./scripts/verify-dify-qdrant.sh
